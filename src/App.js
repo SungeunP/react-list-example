@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ObjectList from './ObjectList';
 import ObjectInputForm from './ObjectInputForm';
+import ObjectView from './ObjectView';
 
 class App extends Component {
 
@@ -18,9 +19,22 @@ class App extends Component {
 				title : "테스트",
 				content : "리덕스를써보자"
 			}
-		]
+    ],
+    selectedObject : null
   }
   
+  getObjectByID = (id) => {
+    id = parseInt(id);
+    let selectedItem = null;
+    this.state.list.find((item) => {
+      if (item.id === id) {
+        console.log("find! ", item);
+        selectedItem = item;
+      }  
+    });
+    return selectedItem;
+  }
+
   // list에 Object 추가
   handleList = (object) => {
     console.log("received object: ", object);
@@ -29,12 +43,22 @@ class App extends Component {
     });
   }
 
+  handleSelectedObject = (objectKey) => {
+    console.log("selected Object Key: ", objectKey);
+    var selectedItem = this.getObjectByID(objectKey);
+    console.log(selectedItem);
+    this.setState({
+      selectedObject : selectedItem
+    });
+  }
+
   render() {
-    console.log("render", this.state.list);
+    console.log("render", this.state);
     return (
       <div>
         <ObjectInputForm createObject={this.handleList} />
-        <ObjectList objectList={this.state.list} />
+        <ObjectList onClickObject={this.handleSelectedObject} objectList={this.state.list} />
+        { this.state.selectedObject && <ObjectView title={this.state.selectedObject.title} content={this.state.selectedObject.content} /> }
       </div>
     );
   }

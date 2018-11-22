@@ -34,11 +34,11 @@ class ObjectInputForm extends Component {
 	}
 
 	handleKeyEnter = (e) => {
-		if (this.state.title === "" || this.state.content === "") {
-			alert("필요한 데이터를 모두 입력해주세요");
-			return;
-		}
 		if (e.key === 'Enter') {
+			if (this.state.title === "" || this.state.content === "") {
+				alert("필요한 데이터를 모두 입력해주세요");
+				return;
+			}
 			console.log("input enter");
 			this.createObject(this.state);
 		}
